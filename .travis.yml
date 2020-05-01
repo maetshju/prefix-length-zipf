@@ -1,0 +1,11 @@
+language: generic
+addons:
+    apt:
+        packages:
+            - pandoc
+            - pandoc-citeproc
+            - texlive-full
+script:
+        - pandoc --filter pandoc-citeproc --bibliography=winnowing.bib winnowing.md -o winnowing.pdf
+os:
+        - linux
