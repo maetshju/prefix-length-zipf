@@ -1,5 +1,10 @@
-language: r
+language: generic
+addons:
+    apt:
+        packages:
+            - pandoc
+            - texlive-humanities
 script:
-        - R CMD --pdf winnowing.Rnw
+        - pandoc --filter pandoc-citeproc --bibliography=winnowing.bib winnowing.md -o winnowing.pdf
 os:
         - linux
