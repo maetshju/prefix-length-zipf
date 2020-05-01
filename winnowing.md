@@ -64,7 +64,7 @@ $$
 
 If we add $500^{501-n}$ to both sides, we get $c - \sum^{n-1}_{i=1} 500^{501-i} \leq 1 + c$, which is true. So long as the inequality holds at the base case $T(1)$, the inequality will hold generally. We know $T(1) = c - 500^{501-1} \leq 1 + c$. Thus, the base case holds.
 
-Therefore, $T(n) \in \mathcal{O}(\frac{1}{n})$. And, therefore, in a real language the number of words live at the $n$-th phone is $\mathcal{O}(\frac{1}{n})$.
+Therefore, $T(n)$ is $\mathcal{O}(\frac{1}{n}) \, \forall n \geq 1$. And, therefore, in a real language the number of words live at the $n$-th phone is $\mathcal{O}(\frac{1}{n}) \, \forall n \geq 1$.
 
 # Lower bound
 
@@ -89,7 +89,7 @@ Assume that the alphabet of this toy language consists of the symbols "a" and "b
 \end{dummy}
 \bigskip
 	
-After the first phone, 7 words are live. After the second phone, 3 words are live. And after the third phone, 1 word is live. This relationship is given by $2^{4-n}-1$ words live after the $n-th$ phone. As a recurrence relation, this is given as $T(n) = T(n-1) - 2^{4-n}$. This is also a decreasing function, and we might want to try the simple $f(n) = \frac{1}{n}$ function first as a lower bound. That is, we wish to prove that $T(n) \in \Omega(\frac{1}{n})$. By the substitution method, we must show that $T(n) \geq c \frac{1}{n}$. Because $n$ can only take on three values, we can enumerate all of these possible values, and we have in fact already done so. If we choose $c=1$, we must evaluate $7 \geq \frac{1}{1}$, $3 \geq \frac{1}{2}$, and $1 \geq \frac{1}{3}$. All three inequalities evaluate to true, so we can conclude that $T(n) \in \Omega(\frac{1}{n})$. Thus, for this small contrived language example, the number of words live at the $n$-th phone is $\Omega(\frac{1}{n})$. Thus, because we chose this example to be a lower bound of what real language might do, the number of words $f(n)$ live at the $n$-th phone in a real language is $\Omega(\frac{1}{n})$.
+After the first phone, 7 words are live. After the second phone, 3 words are live. And after the third phone, 1 word is live. This relationship is given by $2^{4-n}-1$ words live after the $n-th$ phone. As a recurrence relation, this is given as $T(n) = T(n-1) - 2^{4-n}$. This is also a decreasing function, and we might want to try the simple $f(n) = \frac{1}{n}$ function first as a lower bound. That is, we wish to prove that $T(n) \in \Omega(\frac{1}{n})$. By the substitution method, we must show that $T(n) \geq c \frac{1}{n}$. Because $n$ can only take on three values, we can enumerate all of these possible values, and we have in fact already done so. If we choose $c=1$, we must evaluate $7 \geq \frac{1}{1}$, $3 \geq \frac{1}{2}$, and $1 \geq \frac{1}{3}$. All three inequalities evaluate to true, so we can conclude that $T(n) \in \Omega(\frac{1}{n})$. Thus, for this small contrived language example, the number of words live at the $n$-th phone is $\Omega(\frac{1}{n}) \, \forall n \geq 1$. Thus, because we chose this example to be a lower bound of what real language might do, the number of words $f(n)$ live at the $n$-th phone in a real language is $\Omega(\frac{1}{n}) \, \forall n \geq 1$.
 	
 # Synthesis
 	
