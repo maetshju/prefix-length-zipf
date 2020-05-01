@@ -5,6 +5,7 @@ addons:
             - pandoc
             - pandoc-citeproc
             - texlive-humanities
+            - lmodern
 script:
         - pandoc --filter pandoc-citeproc --bibliography=winnowing.bib winnowing.md -o winnowing.pdf
 os:
