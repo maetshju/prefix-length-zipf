@@ -1,0 +1,9 @@
+language: r
+before_install:
+        - tlmgr install qtree
+script:
+        - R CMD --pdf winnowing.Rnw
+r_packages:
+        - knitr
+os:
+        - linux
