@@ -42,7 +42,7 @@ Before any phones have been heard, $W$ words are in contention. After hearing th
 	
 This relationship between how many phones have been heard, $n$, and the number of words currently live, $w_n$, can be expressed as $w_n = f(n) = 1 + \sum^{500-n}_{i=1}500^i$. It is obvious that as $n$ increases, the value of $f(n)$ decreases. This suggests that our desired upper bound such that $f(n)$ is $\mathcal{O}(\frac{1}{n})$ is possible and merely needs to be proved.
 	
-Let's begin by establishing a recurrence relation for the number of words live at any given phone $n$. Based on the above analysis, the recurrence relation is given as $T(n) = 1 + T(n-1) - 500^{501-n}$, with $T(0) = \sum^{500}_{i=1} 500^i$. Now, we must prove that $T(n) \leq c \frac{1}{n} \, \forall n > 0$. That is, that $T(n)$ (and by extension $f(n)$) is $\mathcal{O}(\frac{1}{n}$. We will prove this statement by induction.
+Let's begin by establishing a recurrence relation for the number of words live at any given phone $n$. Based on the above analysis, the recurrence relation is given as $T(n) = 1 + T(n-1) - 500^{501-n}$, with $T(0) = \sum^{500}_{i=1} 500^i$. Now, we must prove that $T(n) \leq c \frac{1}{n} \, \forall n > 0$. That is, that $T(n)$ (and by extension $f(n)$) is $\mathcal{O}(\frac{1}{n})$. We will prove this statement by induction.
 	
 ## Base case
 	
