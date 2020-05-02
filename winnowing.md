@@ -40,7 +40,7 @@ Before any phones have been heard, $W$ words are in contention. After hearing th
 & = 1 + (w - 500^{500} - 500^{499}) \,.
 \end{align*}
 	
-This relationship between how many phones have been heard, $n$, and the number of words currently live, $w_n$, can be expressed as $w_n = f(n) = 1 + \sum^{500-n}_{i=1}500^i$. It is obvious that as $n$ increases, the value of $f(n)$ decreases. This suggests that our desired upper bound such that $f(n)$ is $\mathcal{O}(\frac{1}{n})$ is possible and merely needs to be proved.
+This relationship between how many phones have been heard, $n$, and the number of words currently live, $w_n$, can be expressed as $w_n = f(n) = 1 + \sum^{500-n}_{i=1}500^i \, \forall \, n \geq 1$ and $f(0) = W$. Note that the empty sum is taken to be 0, so that $f(500) = \sum^{500 - 500}_{i=1} 500^i = \sum^{0}_{i=1} = 0$. It is obvious that as $n$ increases, the value of $f(n)$ decreases. This suggests that our desired upper bound such that $f(n)$ is $\mathcal{O}(\frac{1}{n})$ is possible and merely needs to be proved.
 	
 Let's begin by establishing a recurrence relation for the number of words live at any given phone $n$. Based on the above analysis, the recurrence relation is given as $T(n) = 1 + T(n-1) - 500^{501-n}$, with $T(0) = \sum^{500}_{i=1} 500^i$. Now, we must prove that $T(n) \leq c \frac{1}{n} \, \forall n > 0$. That is, that $T(n)$ (and by extension $f(n)$) is $\mathcal{O}(\frac{1}{n})$. We will prove this statement by induction.
 	
@@ -65,6 +65,18 @@ $$
 If we add $500^{501-n}$ to both sides, we get $c - \sum^{n-1}_{i=1} 500^{501-i} \leq 1 + c$, which is true. So long as the inequality holds at the base case $T(1)$, the inequality will hold generally. We know $T(1) = c - 500^{501-1} \leq 1 + c$. Thus, the base case holds.
 
 Therefore, $T(n)$ is $\mathcal{O}(\frac{1}{n}) \, \forall n \geq 1$. And, therefore, in a real language the number of words live at the $n$-th phone is $\mathcal{O}(\frac{1}{n}) \, \forall n \geq 1$.
+
+Because we do have a hard upper and lower bound for which $f(n)$ is defined, we can empirically verify this inductive proof as well. Using the Julia language, we can check that every value in the recurrence relation $T(n) \leq c \frac{1}{n}$. The last line in the following code snippet in Julia evaluates to `true`, corroborating the analytical proof.
+
+```julia
+W = sum(BigInt(500)^i for i in 1:500)
+f = [1 + sum(BigInt(500)^i for i in 1:(500-n)) for n in 1:499]
+push!(f, 1) # append the result of f(500) with the empty sum
+O = [W * ceil(1 / n) for n in 1:500]
+all(f .<= O)
+```
+
+And, to really drive home just how much more complex this contrived language example is comparison to the same situation for human language, `W` evaluates to over 13 googols of words that are possible in this language. For reference, one googol is $1 \times 10^{100}$, while a million, for example, is merely  $1 \times 10^6$.
 
 # Lower bound
 
