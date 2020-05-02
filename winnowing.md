@@ -88,7 +88,7 @@ end
 f == T
 ```
 
-And, to really drive home just how much more complex this contrived language example is comparison to the same situation for human language, $W$, the number of possible words in this language, evaluates to a number that is approximately $3.06 \times 10^{1349}$. For reference, one googol is $1 \times 10^{100}$, and a million is merely  $1 \times 10^6$. The number of atoms in the observable universe has been estimated at $10^{80}$ [@eddington_philosophy_1939] and $10^{78}$ [@silk_shores_2005]. Even if these estimates were one trillion times smaller than they needed to be, the number of atoms in the observable universe (let alone the prefix structure of words in a human language) would still be dwarfed by the number of words possible in this contrived language.
+And, to really drive home just how much more complex this contrived language example is comparison to the same situation for human language, $W$, the number of possible words in this language, evaluates to a number that is approximately $3.06 \times 10^{1349}$. For reference, one googol is $1 \times 10^{100}$, and a million is merely  $1 \times 10^6$. The number of atoms in the observable universe has been estimated (to within an order of magnitude) at $10^{80}$ [@eddington_philosophy_1939] and $10^{78}$ [@silk_shores_2005]. Even if these estimates were one trillion times smaller than they needed to be, the number of atoms in the observable universe (let alone the prefix structure of words in a human language) would still be dwarfed by the number of words possible in this contrived language.
 
 # Lower bound
 
