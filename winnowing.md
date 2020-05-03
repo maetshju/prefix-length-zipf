@@ -59,7 +59,7 @@ c \frac{1}{n-1} - 500^{501-n} & \leq c \frac{1}{n} \\
 -500^{501-n} & \leq c \frac{1}{n^2 - 1} \, .
 \end{align*}
 
-Because $c$ is restricted by definition to be postitive, and our recurrence relation also restricts $n$ such that $1 \leq n \leq 500$, we can see that the last statement is true. That is, $-500^{501 - n}$ will always be negative, and $c \frac{1}{n^2 - 1}$ will always be positive, so it is clear that the inequality is true.
+Because $c$ is restricted by definition to be postitive, and our recurrence relation also restricts $n$ such that $1 < n \leq 500$ (recall that $T(1)$ is defined separately, so we need not worry about the value of 1 in this instance), we can see that the last statement is true. That is, $-500^{501 - n}$ will always be negative, and $c \frac{1}{n^2 - 1}$ will always be positive, so it is clear that the inequality is true.
 
 So long as the inequality holds at the base case $T(1)$, the inequality will hold generally. We know $T(1) = c - 500^{501-1} \leq 1 + c$ when $c = \sum^{500}_{i=1} 500^i$, for example. Thus, the base case holds.
 
