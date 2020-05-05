@@ -72,7 +72,7 @@ This relationship between how many phones have been heard, $n$, and the number o
 
 \begin{proof}
 	
-Let's begin by establishing a recurrence relation for the number of words live at any given phone $n$. Based on the above analysis, the recurrence relation is given as $T(n) = T(n-1) - 500^{501-n}$, with $T(0) = \sum^{500}_{i=1} 500^i$ and $T(1) = 1 + \sum^{500}_{i=1} 500^i - 500^500$. Now, we must prove that $T(n) \leq c \frac{1}{n}$ for all $n > 0$. That is, that $T(n)$ (and by extension $f(n)$) is $\mathcal{O}(\frac{1}{n})$. We will prove this statement by induction.
+Let's begin by establishing a recurrence relation for the number of words live at any given phone $n$. Based on the above analysis, the recurrence relation is given as $T(n) = T(n-1) - 500^{501-n}$, with $T(0) = \sum^{500}_{i=1} 500^i$ and $T(1) = 1 + \sum^{500}_{i=1} 500^i - 500^{500}$. Now, we must prove that $T(n) \leq c \frac{1}{n}$ for all $n > 0$. That is, that $T(n)$ (and by extension $f(n)$) is $\mathcal{O}(\frac{1}{n})$. We will prove this statement by induction.
 	
 \subsection{Base case}
 	
