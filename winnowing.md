@@ -84,9 +84,9 @@ Our recurrence relation is $T(n) = 1 + T(n-1) - 500^{501-n}$. What we wish to sh
 
 \begin{align*}
 c \frac{1}{n-1} - 500^{501-n} & \leq c \frac{1}{n} \\
--500^{501-n} & \leq c (\frac{1}{n} - \frac{1}{n-1}) \\
--500^{501-n} & \leq c \frac{n - (n - 1)}{n (n - 1)} \\
--500^{501-n} & \leq c \frac{1}{n^2 - n} \, .
+-(500^{501-n}) & \leq c (\frac{1}{n} - \frac{1}{n-1}) \\
+-(500^{501-n}) & \leq c \frac{n - (n - 1)}{n (n - 1)} \\
+-(500^{501-n}) & \leq c \frac{1}{n^2 - n} \, .
 \end{align*}
 
 Because $c$ is restricted by definition to be postitive, and our recurrence relation also restricts $n$ such that $1 < n \leq 500$ (recall that $T(1)$ is defined separately, so we need not worry about the value of 1 in this instance), we can see that the last statement is true. That is, $-500^{501 - n}$ will always be negative, and $c \frac{1}{n^2 - n}$ will always be positive, so it is clear that the inequality is true.
