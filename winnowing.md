@@ -83,13 +83,13 @@ We must show the inequality holds for the base case $n = 1$. That is, $T(1) \leq
 Our recurrence relation is $T(n) = 1 + T(n-1) - 500^{501-n}$. What we wish to show now is that $T(n) \leq c \frac{1}{n}$ for all $n > 1$. If we assume that our statement holds true for all values less than $n$, we get $T(n-1) \leq c  \frac{1}{n-1}$. We must now show this is true for $T(n)$. Because we assumed that $T(n-1) \leq c  \frac{1}{n-1}$, it is implied that $T(n) = 1 + T(n-1) - 500^{501-n} \leq 1 + c \frac{1}{n-1} - 500^{501-n}$. We must now show that $1 + c \frac{1}{n-1} - 500^{501-n} \leq c \frac{1}{n}$. By algebraic manipulation, we can find a form where it is easier to show that this statement is true:
 
 \begin{align*}
-c \frac{1}{n-1} - 500^{501-n} & \leq c \frac{1}{n} \\
--(500^{501-n}) & \leq c (\frac{1}{n} - \frac{1}{n-1}) \\
--(500^{501-n}) & \leq c \frac{n - (n - 1)}{n (n - 1)} \\
--(500^{501-n}) & \leq c \frac{1}{n^2 - n} \, .
+1 + c \frac{1}{n-1} - 500^{501-n} & \leq c \frac{1}{n} \\
+1 - 500^{501-n} & \leq c (\frac{1}{n} - \frac{1}{n-1}) \\
+1 - 500^{501-n} & \leq c \frac{n - (n - 1)}{n (n - 1)} \\
+1 - 500^{501-n} & \leq c \frac{1}{n^2 - n} \, .
 \end{align*}
 
-Because $c$ is restricted by definition to be postitive, and our recurrence relation also restricts $n$ such that $1 < n \leq 500$ (recall that $T(1)$ is defined separately, so we need not worry about the value of 1 in this instance), we can see that the last statement is true. That is, $-500^{501 - n}$ will always be negative, and $c \frac{1}{n^2 - n}$ will always be positive, so it is clear that the inequality is true.
+Because $c$ is restricted by definition to be postitive, and our recurrence relation also restricts $n$ such that $1 < n \leq 500$ (recall that $T(1)$ is defined separately, so we need not worry about the value of 1 in this instance), we can see that the last statement is true. That is, $1 - 500^{501 - n}$ will always be negative, and $c \frac{1}{n^2 - n}$ will always be positive, so it is clear that the inequality is true.
 
 So long as the inequality holds at the base case $T(1)$, the inequality will hold generally. We know $T(1) = c - 500^{501-1} \leq 1 + c$ when $c = \sum^{500}_{i=1} 500^i$, for example. Thus, the base case holds.
 
