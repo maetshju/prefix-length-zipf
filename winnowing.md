@@ -5,7 +5,7 @@ header-includes:
 	- \usepackage{amsmath}
 	- \usepackage{qtree}
 	- \usepackage{amsthm}
-	- \newenvironment{dummy}{}{}
+	- \usepackage{float}
 	- \newtheorem{theorem}{Theorem}
 	- \newtheorem{lemma}{Lemma}
 ---
@@ -36,6 +36,11 @@ In a human language, the function $f(n)$ that that maps between the number of ph
 We can prove Theorem \ref{thm:thm1} by proving the following lemmata:
 
 \begin{lemma}
+\label{lem:gen}
+In an $n$-ary tree with finite height $D$, the number of nodes in a subtree starting at depth $d \leq D$ is $\Theta(\frac{1}{n})$.
+\end{lemma}
+
+\begin{lemma}
 \label{lem:upbound}
 In a human language, the function $f(n)$ that that maps between the number of phones in a prefix $n$ and the number of words that share that prefix $w_n$ is $\mathcal{O}(\frac{1}{n})$.
 \end{lemma}
@@ -44,92 +49,40 @@ In a human language, the function $f(n)$ that that maps between the number of ph
 \label{lem:lowbound}
 In a human language, the function $f(n)$ that that maps between the number of phones in a prefix $n$ and the number of words that share that prefix $w_n$ is $\Omega(\frac{1}{n})$.
 \end{lemma}
-    
-# Upper bound
-	
-Let's begin with the upper bound, Lemma \ref{lem:upbound}. We must prove that $f(n)$ is $\mathcal{O}(\frac{1}{n})$. To contrive the clearly more complex than human language example for our upper bound, we must lay out some assumptions. Assume that all potential phone strings are a word in the contrived language, and there are no phonotactic constraints on how to combine phones. Assume there are 500 phones in this language. That this is not observed in the world's language's is irrelevant since we are only seeking to find an upper bound. Also assume that that a word can have up to 500 phones in it. If we were to create a prefix tree that is 500 levels deep, we would see that each node branches into 500 subtrees. There are 500 words at a depth of 1, $500^2$ words at a depth of 2, and $500^3$ words at a depth of 3. Let $W$ be the total number of words, which is $\sum^{500}_{i=1} 500^i$.
-	
-Before any phones have been heard, $W$ words are in contention. After hearing the first phone,
-	
-\begin{align*}
-\frac{1}{500} W & = \frac{1}{500} \sum_{i=1}^{500} 500^i \\
-& = \frac{500^1}{500} + \frac{500^2}{500} + \dots + \frac{500^{500}}{500} \\
-& = 1 + 500^1 + 500^2 + \dots + 500^{499} \\
-& = 1 + \sum_{i=1}^{499} 500^i \\
-& = 1 + (W - 500^{500})
-\end{align*}
-	
-\noindent words are in contention. The constant 1 term is the root of the subtree that the first phone belongs to. Experiencing a second phone would remove the word belonging to the first phone from contention. As such, after hearing the second phone, the number of words still in contention is
-	
-\begin{align*}
-\frac{1}{500} \sum_{i=1}^{499} 500^i & =  \frac{500^1}{500} + \frac{500^2}{500} + \dots + \frac{500^{499}}{500} \\
-& = 1 + 500^1 + 500^2 + \dots + 500^{498} \\
-& = 1 + \sum_{i=1}^{498} 500^i \\
-& = 1 + (W - 500^{500} - 500^{499}) \,.
-\end{align*}
-	
-This relationship between how many phones have been heard, $n$, and the number of words currently live, $w_n$, can be expressed as $w_n = f(n) = 1 + \sum^{500-n}_{i=1}500^i$ for all $n \geq 1$ and $f(0) = W$. Note that the empty sum is taken to be 0, so that $f(500) = \sum^{500 - 500}_{i=1} 500^i = \sum^{0}_{i=1} = 0$. It is obvious that as $n$ increases, the value of $f(n)$ decreases. This suggests that our desired upper bound such that $f(n)$ is $\mathcal{O}(\frac{1}{n})$ is possible and merely needs to be proved.
+
+# General case
+
+Consider a perfect $n$-ary tree with height $D$. "Perfect" in this context means that all nodes have $n$ children, except those nodes at depth $D$, which all have no children. At depth 1, there is 1 node. At depth 2, there are $n$ nodes. At depth 3, there are $n^2$ nodes. This pattern can be represented as function $g(d) = n^{d-1}$. The total number of nodes at or before depth $d$ is, then, $s(d) = \sum^{d}_{i=1} n^{i-1}$. The number of nodes in a subtree starting at depth $d$ would then be $f(d) = \sum^{(D-d)+1}_{i=1} n^{i-1} = \sum^{(D-d)+1}_{i=1} \frac{n^i}{n} = \frac{\sum^{(D-d)+1}_{i=1} n^i}{n}$. We wish to show that $f(d)$ is $\Theta(\frac{1}{n})$, which will prove Lemma \ref{lem:gen}.
 
 \begin{proof}
-	
-Let's begin by establishing a recurrence relation for the number of words live at any given phone $n$. Based on the above analysis, the recurrence relation is given as $T(n) = T(n-1) - 500^{501-n}$, with $T(0) = \sum^{500}_{i=1} 500^i$ and $T(1) = 1 + \sum^{500}_{i=1} 500^i - 500^{500}$. Now, we must prove that $T(n) \leq c \frac{1}{n}$ for all $n > 0$. That is, that $T(n)$ (and by extension $f(n)$) is $\mathcal{O}(\frac{1}{n})$. We will prove this statement by induction.
-	
-\subsection{Base case}
-	
-We must show the inequality holds for the base case $n = 1$. That is, $T(1) \leq c \frac{1}{n}$. To do so, let's choose a value for $c$, say, $\sum^{500}_{i=1} 500^i$. At $n = 1$, we have $T(1) = \sum^{500}_{i=1} 500^i - 500^{501-1} = \sum^{500}_{i=1} 500^i - 500^{500}$, and it is obvious that $\sum^{500}_{i=1} 500^i - 500^{500} \leq \sum^{500}_{i=1} 500^i$. Thus, we can establish that $T(1) \leq c \frac{1}{n}$ for some constant $c$, in this case, $\sum^{500}_{i=1} 500^i$.
-	
-\subsection{Inductive step}
 
-Our recurrence relation is $T(n) = 1 + T(n-1) - 500^{501-n}$. What we wish to show now is that $T(n) \leq c \frac{1}{n}$ for all $n > 1$. If we assume that our statement holds true for all values less than $n$, we get $T(n-1) \leq c  \frac{1}{n-1}$. We must now show this is true for $T(n)$. Because we assumed that $T(n-1) \leq c  \frac{1}{n-1}$, it is implied that $T(n) = 1 + T(n-1) - 500^{501-n} \leq 1 + c \frac{1}{n-1} - 500^{501-n}$. We must now show that $1 + c \frac{1}{n-1} - 500^{501-n} \leq c \frac{1}{n}$. By algebraic manipulation, we can find a form where it is easier to show that this statement is true:
+We can choose constants $c_1 > 0$ and $c_2 > 0$ such that $c_1 \frac{1}{d} \leq f(d) \leq c_2 \frac{1}{d}$. By removing the common $\frac{1}{n}$ terms by multiplying by $n$, we can see that it is equivalent to finc $c_1$ and $c_2$ such that $c_1 \leq \sum^{(D-d)+1}_{i=1} n^i \leq c_2$ for all values of $d$. We know that the smallest value that $\sum^{(D-d)+1}_{i=1} n^i$ can be is 1 because $1 \leq d \leq D$, so choosing $c_1 = 1$ satisfies the lower bound. We also know that the greatest value that $\sum^{(D-d)+1}_{i=1} n^i$ can be is $\sum^{(D-1)+1}_{i=1} n^i$. So, $c_2 = \sum^{(D-1)+1}_{i=1} n^i$ satisfies the upper bound. The result is that $1 \leq \sum^{(D-d)+1}_{i=1} n^i \leq \sum^{(D-1)+1}_{i=1} n^i$ for all $d$ on the interval $[1, D]$. Thus, $f(d)$ is $\Theta(\frac{1}{n})$.
 
-\begin{align*}
-1 + c \frac{1}{n-1} - 500^{501-n} & \leq c \frac{1}{n} \\
-1 - 500^{501-n} & \leq c (\frac{1}{n} - \frac{1}{n-1}) \\
-1 - 500^{501-n} & \leq c \frac{n - (n - 1)}{n (n - 1)} \\
-1 - 500^{501-n} & \leq c \frac{1}{n^2 - n} \, .
-\end{align*}
+\end{proof}
+    
+# Upper bound on human language
 
-Because $c$ is restricted by definition to be postitive, and our recurrence relation also restricts $n$ such that $1 < n \leq 500$ (recall that $T(1)$ is defined separately, so we need not worry about the value of 1 in this instance), we can see that the last statement is true. That is, $1 - 500^{501 - n}$ will always be negative, and $c \frac{1}{n^2 - n}$ will always be positive, so it is clear that the inequality is true.
+Based on Lemma \ref{lem:gen}, we are now ready to prove Lemma \ref{lem:upbound}. To contrive an example that is clearly more complex than human language, consider a perfect 500-ary tree with a height of 500. Framed in terms of language, consider that this contrived language 500 phonemes and that there are no phonotactic constraints on how to combine phonemes, up to a length of word length of 500. Also consider the prefix corresponding to an empty string, which we will not consider to be a word. The number of words $w_n$ that share a given prefix of length $n$ is expressed as $w_n = f(n) = \sum^{500-(n+1))+1}_{i=1} 500^{i-1}$. The offset as $n+1$ reflects the fact that the depth is always one higher than the number of phonemes that have been heard. A small proof must be made that this situation is covered by the result from Lemma \ref{lem:gen}.
 
-So long as the inequality holds at the base case $T(1)$, the inequality will hold generally. We know $T(1) = c - 500^{501-1} \leq 1 + c$ when $c = \sum^{500}_{i=1} 500^i$, for example. Thus, the base case holds.
+\begin{proof}
 
-Therefore, $T(n)$ is $\mathcal{O}(\frac{1}{n})$ for all $n \geq 1$. And, therefore, in a real language the number of words live at the $n$-th phone is $\mathcal{O}(\frac{1}{n})$ for all $n \geq 1$.
+We proved in Lemma \ref{lem:gen} that number of nodes in a subtree beginning at depth $d$ is $\Theta(\frac{1}{d})$ for all $d$ on the interval $[1, D]$. In the example here, we are considering the trees of depth $d$ on the interval $[2, D]$ because the empty string resides in the node at depth $d = 1$. Because the interval $[2, D]$ is within the interval $[1, D]$, the result from Lemma \ref{lem:gen} still applies, and we can state that the number of words $w_n$ sharing a prefix of length $n$ in the given example here is $\Theta(\frac{1}{n})$.
 
 \end{proof}
 
-Because we do have a hard upper and lower bound for which $f(n)$ is defined, we can empirically verify this inductive proof as well. Using the Julia language, we can check that $f(n) \leq c \frac{1}{n}$ is true for every possible value of $n \geq 1$. The last line in the following code in Julia evaluates to `true`, corroborating the analytical proof.
+It should be obvious that this example is more complex than a human language, at least as regards the number of words that could be formed at each level of the tree. For example, there are 500 words of length 1, $500^2$ words of length 2, etc. And, there are ultimately over $3.06 \times 10^{1349}$ words possible in this example. For reference, one googol is $1 \times 10^{100}$, and a million is merely  $1 \times 10^6$. The number of atoms in the observable universe has been estimated (to within an order of magnitude) at $10^{80}$ [@eddington_philosophy_1939] and $10^{78}$ [@silk_shores_2005]. Even if these estimates were one trillion times smaller than they needed to be, the number of atoms in the observable universe (let alone the prefix structure of words in a human language) would still be dwarfed by the number of words possible in this contrived language.
 
-```julia
-W = sum(BigInt(500)^i for i in 1:500)
-f = [1 + sum(BigInt(500)^i for i in 1:(500-n)) for n in 1:499]
-push!(f, 1) # append the result of f(500) with the empty sum
-O = [W * 1 / n for n in 1:500]
-all(f .<= O) # check if all values of f <= the corresponding values of O
-```
+Because this example provides an upper bound on the behavior of a real human language is $\Theta(\frac{1}{n})$, we can say that the number of words $w_n$ sharing a prefix of length $n$ in a human language is assuredly $\mathcal{O}(\frac{1}{n})$.
 
-We can also verify that our recurrence relation matches our function $f$, where the last line of the following code in Julia evaluates to `true` as well.
+# Lower bound on human language
 
-```julia
-W = sum(BigInt(500)^i for i in 1:500)
-f = [1 + sum(BigInt(500)^i for i in 1:(500-n)) for n in 1:499]
-push!(f, 1) # append the result of f(500) with the empty sum
-T = [1 + W - BigInt(500)^(501-1)] # Start with the value of T(1)
-for n in 2:500
-  push!(T, last(T) - BigInt(500)^(501-n))
-end
-f == T
-```
+It is now also possible to prove Lemma \ref{lem:lowbound} based on Lemma \ref{lem:gen}. To perform this task, we will contrive another language example. This one will be uncontroversially simpler than a real language would be, and thus will provide some sort of lower bound, where we expect that the $n$th phoneme in a real language will have as many or more words live as happens in this toy example.
 
-And, to really drive home just how much more complex this contrived language example is comparison to the same situation for human language, $W$, the number of possible words in this language, evaluates to a number that is approximately $3.06 \times 10^{1349}$. For reference, one googol is $1 \times 10^{100}$, and a million is merely  $1 \times 10^6$. The number of atoms in the observable universe has been estimated (to within an order of magnitude) at $10^{80}$ [@eddington_philosophy_1939] and $10^{78}$ [@silk_shores_2005]. Even if these estimates were one trillion times smaller than they needed to be, the number of atoms in the observable universe (let alone the prefix structure of words in a human language) would still be dwarfed by the number of words possible in this contrived language.
-
-# Lower bound
-
-Now that an upper bound has been established, we must also show that $f(n)$ is $\mathcal{O}(\frac{1}{n})$ to prove Lemma \ref{lem:lowbound}. To perform this task, we will contrive another language example. This one will be uncontroversially simpler than a real language would be, and thus will provide some sort of lower bound, where we expect that the $n$th phoneme in a real language will have as many or more words live as happens in this toy example.
-
-Assume that the alphabet of this toy language consists of the symbols "a" and "b". Any combination of these symbols until a string length of three yields a valid word. The language can thus be expressed in the following prefix tree. Each node in the tree except for the root node represents a word.
+Assume that the alphabet of this toy language consists of the symbols "a" and "b". Any combination of these symbols until a string length of three yields a valid word. The language can thus be expressed in the following prefix tree. Each node in the tree except for the root node represents a word, except for the root node, which corresponds to an empty string. The tree structure of this example is visualized in Figure \ref{fig:lowboundtree}.
 
 \bigskip
-\begin{dummy}
+
+\begin{figure}[H]
 \Tree[.$\emptyset$
 [.a
 	[.aa
@@ -142,16 +95,13 @@ Assume that the alphabet of this toy language consists of the symbols "a" and "b
 	[.ba
 		[.baa ] [.bab ]]
 	] ]
-\end{dummy}
+\caption{The tree structure for the contrived language example. Note that the root of the tree corresponds to the empty string or empty set, which is not considered to be a valid word. Every other node in the tree does correspond to a valid word in this language.}
+\label{fig:lowboundtree}
+\end{figure}
+
 \bigskip
 	
-After the first phone, 7 words are live. After the second phone, 3 words are live. And after the third phone, 1 word is live. This relationship is given by $2^{4-n}-1$ words live after the $n-th$ phone. As a recurrence relation, this is given as $T(n) = T(n-1) - 2^{4-n}$. This is also a decreasing function, and we might want to try the simple $f(n) = \frac{1}{n}$ function first as a lower bound. That is, we wish to prove that $T(n)$ is $\Omega(\frac{1}{n})$. 
-
-\begin{proof}
-
-By the substitution method, we must show that $T(n) \geq c \frac{1}{n}$. Because $n$ can only take on three values, we can enumerate all of these possible values, and we have in fact already done so. If we choose $c=1$, we must evaluate $7 \geq \frac{1}{1}$, $3 \geq \frac{1}{2}$, and $1 \geq \frac{1}{3}$. All three inequalities evaluate to true, so we can conclude that $T(n)$ is $\Omega(\frac{1}{n})$. Thus, for this small contrived language example, the number of words live at the $n$-th phone is $\Omega(\frac{1}{n})$ for all $n \geq 1$. Thus, because we chose this example to be a lower bound of what real language might do, the number of words $f(n)$ live at the $n$-th phone in a real language is $\Omega(\frac{1}{n})$ for all $n \geq 1$.
-
-\end{proof}
+This example is a perfect binary tree with a height of 4. By analogy to the result from proving Lemma \ref{lem:upbound}, we know that it matches the criteria for when Lemma \ref{lem:gen} is true. As such, we know that the number of words sharing a prefix of length $n$ is $\Theta(\frac{1}{n})$. The tree in this example is also obviously less complex than the situation in a real human language, so it provides a lower bound on human language. Thus, in a real human language, the number of words $w_n$ sharing a prefix of length $n$ is $\Omega(\frac{1}{n})$.
 	
 # Synthesis
 	
@@ -159,7 +109,7 @@ The proof for Theorem \ref{thm:thm1} is now at hand.
 
 \begin{proof}
 
-We have shown that for a case more complex than a real language might exhibit---which provides an upper bound on real language---the number of words that live at the $n$-th phone is $\mathcal{O}(\frac{1}{n})$. Similarly, for a case less complex than a real language---which provides a lower bound on real language---we have shown that the number of words live at the $n$-th phone is $\Omega(\frac{1}{n})$. Therefore, we can say that the number of words $w_n = f(n)$ live at the $n$-th phone in real human language is $\Theta(\frac{1}{n})$. That is, Lemma \ref{lem:upbound} is true, and Lemma \ref{lem:lowbound} is true, therefore, Theorem \ref{thm:thm1} is true.
+We have shown that for a case more complex than a real language might exhibit---which provides an upper bound on real language---the number of words that live at the $n$-th phone is $\mathcal{O}(\frac{1}{n})$. Similarly, for a case less complex than a real language---which provides a lower bound on real language---we have shown that the number of words live at the $n$-th phone is $\Omega(\frac{1}{n})$. Therefore, we can say that the number of words $w_n$ live at the $n$-th phone in real human language is $\Theta(\frac{1}{n})$. That is, Lemma \ref{lem:upbound} is true, and Lemma \ref{lem:lowbound} is true, therefore, Theorem \ref{thm:thm1} is true.
 
 \end{proof}
 
