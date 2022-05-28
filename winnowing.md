@@ -37,7 +37,7 @@ We can prove Theorem \ref{thm:thm1} by proving the following lemmata:
 
 \begin{lemma}
 \label{lem:gen}
-In an $n$-ary tree with finite height $D$, the number of nodes in a subtree starting at depth $d \leq D$ is $\Theta(\frac{1}{n})$.
+In an $n$-ary tree with finite height $D$, the number of nodes in a subtree starting at depth $d \leq D$ is $\Theta(\frac{1}{d})$.
 \end{lemma}
 
 \begin{lemma}
@@ -52,17 +52,19 @@ In a human language, the function $f(n)$ that that maps between the number of ph
 
 # General case
 
-Consider a perfect $n$-ary tree with height $D$. "Perfect" in this context means that all nodes have $n$ children, except those nodes at depth $D$, which all have no children. At depth 1, there is 1 node. At depth 2, there are $n$ nodes. At depth 3, there are $n^2$ nodes. This pattern can be represented as function $g(d) = n^{d-1}$. The total number of nodes at or before depth $d$ is, then, $s(d) = \sum^{d}_{i=1} n^{i-1}$. The number of nodes in a subtree starting at depth $d$ would then be $f(d) = \sum^{(D-d)+1}_{i=1} n^{i-1} = \sum^{(D-d)+1}_{i=1} \frac{n^i}{n} = \frac{\sum^{(D-d)+1}_{i=1} n^i}{n}$. We wish to show that $f(d)$ is $\Theta(\frac{1}{n})$, which will prove Lemma \ref{lem:gen}.
+Consider a perfect $n$-ary tree with height $D$. "Perfect" in this context means that all nodes have $n$ children, except those nodes at depth $D$, which all have no children. At depth 1, there is 1 node. At depth 2, there are $n$ nodes. At depth 3, there are $n^2$ nodes. This pattern can be represented as function $g(d) = n^{d-1}$. The total number of nodes at or before depth $d$ is, then, $s(d) = \sum^{d-1}_{i=0} n^{i}$. The number of nodes in a subtree starting at depth $d$ would then be $f(d) = \sum^{D-d}_{i=0} n^{i}$. We wish to show that $f(d)$ is $\Theta(\frac{1}{d})$, which will prove Lemma \ref{lem:gen}.
 
 \begin{proof}
 
-We can choose constants $c_1 > 0$ and $c_2 > 0$ such that $c_1 \frac{1}{d} \leq f(d) \leq c_2 \frac{1}{d}$. By removing the common $\frac{1}{n}$ terms by multiplying by $n$, we can see that it is equivalent to finc $c_1$ and $c_2$ such that $c_1 \leq \sum^{(D-d)+1}_{i=1} n^i \leq c_2$ for all values of $d$. We know that the smallest value that $\sum^{(D-d)+1}_{i=1} n^i$ can be is 1 because $1 \leq d \leq D$, so choosing $c_1 = 1$ satisfies the lower bound. We also know that the greatest value that $\sum^{(D-d)+1}_{i=1} n^i$ can be is $\sum^{(D-1)+1}_{i=1} n^i$. So, $c_2 = \sum^{(D-1)+1}_{i=1} n^i$ satisfies the upper bound. The result is that $1 \leq \sum^{(D-d)+1}_{i=1} n^i \leq \sum^{(D-1)+1}_{i=1} n^i$ for all $d$ on the interval $[1, D]$. Thus, $f(d)$ is $\Theta(\frac{1}{n})$.
+We can choose constants $c_1 > 0$ and $c_2 > 0$ such that $c_1 \frac{1}{d} \leq f(d) \leq c_2 \frac{1}{d}$. By removing the common $\frac{1}{d}$ terms by multiplying by $d$, we can see that it is equivalent to finc $c_1$ and $c_2$ such that $c_1 \leq d \sum^{D-d}_{i=0} n^i \leq c_2$ for all values of $d$. Recall that $n$ and $D$ are ultimately constants for any particular tree, so $f(\cdot)$ is expressed only in terms of $d$. We know that the smallest value that $\sum^{D-d}_{i=0} n^i$ can be is 1 when $d=D$, so choosing $c_1 = 1$ satisfies the lower bound. We also know that the greatest value that $\sum^{D-d}_{i=0} n^i$ can be is $1 \sum^{D-1}_{i=0} n^i$ when $d = 1$. So, $c_2 = D \sum^{D}_{i=0} n^i$ satisfies the upper bound since this value is clearly larger than $1 \sum^{D-1}_{i=0} n^i$. Thus, $1 \leq d \sum^{D-d}_{i=0} n^i \leq \sum^{(D-1)+1}_{i=0} n^i$ for all $d$ on the interval $[1, D]$. Therefore, $f(d)$ is $\Theta(\frac{1}{d})$.
 
 \end{proof}
+
+Note that we likely could have found tighter lower and upper bounds, but the asymptotic growth would still ultimatley be $\Theta(\frac{1}{n})$.
     
 # Upper bound on human language
 
-Based on Lemma \ref{lem:gen}, we are now ready to prove Lemma \ref{lem:upbound}. To contrive an example that is clearly more complex than human language, consider a perfect 500-ary tree with a height of 500. Framed in terms of language, consider that this contrived language 500 phonemes and that there are no phonotactic constraints on how to combine phonemes, up to a length of word length of 500. Also consider the prefix corresponding to an empty string, which we will not consider to be a word. The number of words $w_n$ that share a given prefix of length $n$ is expressed as $w_n = f(n) = \sum^{500-(n+1))+1}_{i=1} 500^{i-1}$. The offset as $n+1$ reflects the fact that the depth is always one higher than the number of phonemes that have been heard. A small proof must be made that this situation is covered by the result from Lemma \ref{lem:gen}.
+Based on Lemma \ref{lem:gen}, we are now ready to prove Lemma \ref{lem:upbound}. To contrive an example that is clearly more complex than human language, consider a perfect 500-ary tree with a height of 500. Framed in terms of language, consider that this contrived language 500 phonemes and that there are no phonotactic constraints on how to combine phonemes, up to a length of word length of 500. Also consider the prefix corresponding to an empty string, which we will not consider to be a word. The number of words $w_n$ that share a given prefix of length $n$ is expressed as $w_n = f(n) = \sum^{500-(n+1))}_{i=0} 500^{i}$. The offset as $n+1$ reflects the fact that the depth is always one higher than the number of phonemes that have been heard. A small proof must be made that this situation is covered by the result from Lemma \ref{lem:gen}.
 
 \begin{proof}
 
@@ -72,7 +74,7 @@ We proved in Lemma \ref{lem:gen} that number of nodes in a subtree beginning at 
 
 It should be obvious that this example is more complex than a human language, at least as regards the number of words that could be formed at each level of the tree. For example, there are 500 words of length 1, $500^2$ words of length 2, etc. And, there are ultimately over $3.06 \times 10^{1349}$ words possible in this example. For reference, one googol is $1 \times 10^{100}$, and a million is merely  $1 \times 10^6$. The number of atoms in the observable universe has been estimated (to within an order of magnitude) at $10^{80}$ [@eddington_philosophy_1939] and $10^{78}$ [@silk_shores_2005]. Even if these estimates were one trillion times smaller than they needed to be, the number of atoms in the observable universe (let alone the prefix structure of words in a human language) would still be dwarfed by the number of words possible in this contrived language.
 
-Because this example provides an upper bound on the behavior of a real human language is $\Theta(\frac{1}{n})$, we can say that the number of words $w_n$ sharing a prefix of length $n$ in a human language is assuredly $\mathcal{O}(\frac{1}{n})$.
+Because this example that provides an upper bound on the behavior of a real human language is $\Theta(\frac{1}{n})$, we can say that the number of words $w_n$ sharing a prefix of length $n$ in a human language is assuredly $\mathcal{O}(\frac{1}{n})$.
 
 # Lower bound on human language
 
